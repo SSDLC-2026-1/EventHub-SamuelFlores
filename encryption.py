@@ -49,27 +49,18 @@ def encrypt_aes(texto, clave):
 
 
 def decrypt_aes(texto_cifrado_hex, nonce_hex, tag_hex, clave):
-    """
-    Descifra texto cifrado con AES-EAX.
+    
 
-    Debes:
+    texto_cifrado = bytes.fromhex(texto_cifrado_hex)
+    nonce = bytes.fromhex(nonce_hex)
+    tag = bytes.fromhex(tag_hex)
 
-    1. Convertir texto_cifrado_hex, nonce_hex y tag_hex a bytes.
-    2. Crear el objeto AES usando:
-           AES.new(clave, AES.MODE_EAX, nonce=nonce)
-    3. Usar decrypt_and_verify() para validar integridad.
-    4. Retornar el texto descifrado como string.
-    """
+    cipher = AES.new(clave, AES.MODE_EAX, nonce=nonce)
 
-    # TODO: Implementar conversión de hex a bytes
+    texto_descifrado_bytes = cipher.decrypt_and_verify(texto_cifrado, tag)
 
-    # TODO: Crear objeto AES con nonce
+    return texto_descifrado_bytes.decode()
 
-    # TODO: Usar decrypt_and_verify
-
-    # TODO: Convertir resultado a string y retornar
-
-    pass
 
 # ==========================================================
 # PASSWORD HASHING (PBKDF2 - SHA256)
@@ -156,8 +147,8 @@ if __name__ == "__main__":
     print("Tag:", tag)
 
     # Cuando implementen decrypt_aes, esto debe funcionar
-    # texto_descifrado = decrypt_aes(texto_cifrado, nonce, tag, clave)
-    # print("Texto descifrado:", texto_descifrado)
+    texto_descifrado = decrypt_aes(texto_cifrado, nonce, tag, clave)
+    print("Texto descifrado:", texto_descifrado)
 
 
     print("\n=== PRUEBA HASH ===")
